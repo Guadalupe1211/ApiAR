@@ -1,0 +1,18 @@
+Listening on port 2023
+Error de consulta: ConnectionError: Failed to connect to lab420azdb01.itesm.mx:1433 - getaddrinfo ENOTFOUND lab420azdb01.itesm.mx
+    at /home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/connection-pool.js:85:17
+    at Connection.onConnect (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:838:9)
+    at Object.onceWrapper (node:events:632:26)
+    at Connection.emit (node:events:517:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at Connection.socketError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1340:12)
+    at /home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1133:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11) {
+  code: 'ESOCKET',
+  originalError: ConnectionError: Failed to connect to lab420azdb01.itesm.mx:1433 - getaddrinfo ENOTFOUND lab420azdb01.itesm.mx
+      at Connection.socketError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1340:28)
+      at /home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1133:14
+      at process.processTicksAndRejections (node:internal/process/task_queues:77:11) {
+    code: 'ESOCKET'
+  }
+}

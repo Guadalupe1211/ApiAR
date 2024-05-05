@@ -1,0 +1,353 @@
+node:events:495
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: listen EADDRINUSE: address already in use :::2023
+    at Server.setupListenHandle [as _listen2] (node:net:1817:16)
+    at listenInCluster (node:net:1865:12)
+    at Server.listen (node:net:1953:7)
+    at Function.listen (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/express/lib/application.js:635:24)
+    at Object.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/index.js:403:5)
+    at Module._compile (node:internal/modules/cjs/loader:1256:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1310:10)
+    at Module.load (node:internal/modules/cjs/loader:1119:32)
+    at Module._load (node:internal/modules/cjs/loader:960:12)
+    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:86:12)
+Emitted 'error' event on Server instance at:
+    at emitErrorNT (node:net:1844:8)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21) {
+  code: 'EADDRINUSE',
+  errno: -98,
+  syscall: 'listen',
+  address: '::',
+  port: 2023
+}
+
+Node.js v18.18.2
+Listening on port 2023
+Error de consulta: ConnectionError: Failed to connect to lab420azdb01.itesm.mx:1433 - getaddrinfo ENOTFOUND lab420azdb01.itesm.mx
+    at /home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/connection-pool.js:85:17
+    at Connection.onConnect (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:838:9)
+    at Object.onceWrapper (node:events:632:26)
+    at Connection.emit (node:events:517:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at Connection.socketError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1340:12)
+    at /home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1133:14
+    at process.processTicksAndRejections (node:internal/process/task_queues:77:11) {
+  code: 'ESOCKET',
+  originalError: ConnectionError: Failed to connect to lab420azdb01.itesm.mx:1433 - getaddrinfo ENOTFOUND lab420azdb01.itesm.mx
+      at Connection.socketError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1340:28)
+      at /home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1133:14
+      at process.processTicksAndRejections (node:internal/process/task_queues:77:11) {
+    code: 'ESOCKET'
+  }
+}
+Listening on port 2023
+Error de consulta: ConnectionError: Failed to connect to tectlup.database.windows.net:1433 in 15000ms
+    at /home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/connection-pool.js:85:17
+    at Connection.onConnect (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:838:9)
+    at Object.onceWrapper (node:events:632:26)
+    at Connection.emit (node:events:517:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at Connection.connectTimeout (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1209:10)
+    at Timeout._onTimeout (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1154:12)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7) {
+  code: 'ETIMEOUT',
+  originalError: ConnectionError: Failed to connect to tectlup.database.windows.net:1433 in 15000ms
+      at Connection.connectTimeout (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1209:26)
+      at Timeout._onTimeout (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1154:12)
+      at listOnTimeout (node:internal/timers:569:17)
+      at process.processTimers (node:internal/timers:512:7) {
+    code: 'ETIMEOUT'
+  }
+}
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+ConnectionError: Failed to connect to tectlup.database.windows.net:1433 in 15000ms
+    at /home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/connection-pool.js:85:17
+    at Connection.onConnect (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:838:9)
+    at Object.onceWrapper (node:events:632:26)
+    at Connection.emit (node:events:517:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at Connection.connectTimeout (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1209:10)
+    at Timeout._onTimeout (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1154:12)
+    at listOnTimeout (node:internal/timers:569:17)
+    at process.processTimers (node:internal/timers:512:7) {
+  code: 'ETIMEOUT',
+  originalError: ConnectionError: Failed to connect to tectlup.database.windows.net:1433 in 15000ms
+      at Connection.connectTimeout (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1209:26)
+      at Timeout._onTimeout (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:1154:12)
+      at listOnTimeout (node:internal/timers:569:17)
+      at process.processTimers (node:internal/timers:512:7) {
+    code: 'ETIMEOUT'
+  }
+}
+{ username: 'Hola', password: 'Hola1' }
+INSERT INTO Usuario (username, password) VALUES ( 'Hola', 'Hola1')
+1 0
+DELETE FROM EscenaObjeto WHERE id_usuario = '1' AND id_objeto = '0'
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+Listening on port 2023
+{ id_usuario: '1', id_objeto: 1 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '1', '1')
+RequestError: Cannot insert the value NULL into column 'titulo', table 'teclup.dbo.EscenaObjeto'; column does not allow nulls. INSERT fails.
+    at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:384:15)
+    at Connection.emit (node:events:518:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+    at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+    at Readable.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+    at Readable.push (node:internal/streams/readable:391:5)
+    at nextAsync (node:internal/streams/from:194:22) {
+  code: 'EREQUEST',
+  originalError: Error: Cannot insert the value NULL into column 'titulo', table 'teclup.dbo.EscenaObjeto'; column does not allow nulls. INSERT fails.
+      at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:382:19)
+      at Connection.emit (node:events:518:28)
+      at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+      at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+      at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+      at Readable.emit (node:events:518:28)
+      at addChunk (node:internal/streams/readable:559:12)
+      at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+      at Readable.push (node:internal/streams/readable:391:5)
+      at nextAsync (node:internal/streams/from:194:22) {
+    info: ErrorMessageToken {
+      name: 'ERROR',
+      handlerName: 'onErrorMessage',
+      number: 515,
+      state: 2,
+      class: 16,
+      message: "Cannot insert the value NULL into column 'titulo', table 'teclup.dbo.EscenaObjeto'; column does not allow nulls. INSERT fails.",
+      serverName: 'tectlup',
+      procName: '',
+      lineNumber: 1
+    }
+  },
+  number: 515,
+  lineNumber: 1,
+  state: 2,
+  class: 16,
+  serverName: 'tectlup',
+  procName: '',
+  precedingErrors: []
+}
+{ id_usuario: '1', id_objeto: 1 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '1', '1')
+{ id_usuario: '1', id_objeto: 2 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '1', '2')
+1 1
+DELETE FROM EscenaObjeto WHERE id_usuario = '1' AND id_objeto = '1'
+{ id_usuario: '1', id_objeto: 3 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '1', '3')
+{ username: 'Juan', password: 'Juan1' }
+INSERT INTO Usuario (username, password) VALUES ( 'Juan', 'Juan1')
+{ id_usuario: '1', id_objeto: 5 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '1', '5')
+{ id_usuario: '2', id_objeto: 2 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '2', '2')
+{ username: 'Lupita', password: 'Lupita1' }
+INSERT INTO Usuario (username, password) VALUES ( 'Lupita', 'Lupita1')
+{ id_usuario: '1', id_objeto: 0 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '1', '0')
+RequestError: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.
+    at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:384:15)
+    at Connection.emit (node:events:518:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+    at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+    at Readable.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+    at Readable.push (node:internal/streams/readable:391:5)
+    at nextAsync (node:internal/streams/from:194:22) {
+  code: 'EREQUEST',
+  originalError: Error: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.
+      at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:382:19)
+      at Connection.emit (node:events:518:28)
+      at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+      at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+      at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+      at Readable.emit (node:events:518:28)
+      at addChunk (node:internal/streams/readable:559:12)
+      at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+      at Readable.push (node:internal/streams/readable:391:5)
+      at nextAsync (node:internal/streams/from:194:22) {
+    info: ErrorMessageToken {
+      name: 'ERROR',
+      handlerName: 'onErrorMessage',
+      number: 547,
+      state: 0,
+      class: 16,
+      message: `The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.`,
+      serverName: 'tectlup',
+      procName: '',
+      lineNumber: 1
+    }
+  },
+  number: 547,
+  lineNumber: 1,
+  state: undefined,
+  class: 16,
+  serverName: 'tectlup',
+  procName: '',
+  precedingErrors: []
+}
+{ id_usuario: '1', id_objeto: 1 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '1', '1')
+Listening on port 2023
+{ username: 'Ruben', password: 'Ruben1' }
+INSERT INTO Usuario (username, password) VALUES ( 'Ruben', 'Ruben1')
+{ id_usuario: '4', id_objeto: 3 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '4', '3')
+{ username: 'karla', password: 'karla1' }
+INSERT INTO Usuario (username, password) VALUES ( 'karla', 'karla1')
+1 1
+DELETE FROM EscenaObjeto WHERE id_usuario = '1' AND id_objeto = '1'
+{ id_usuario: '5', id_objeto: 0 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '5', '0')
+RequestError: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.
+    at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:384:15)
+    at Connection.emit (node:events:518:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+    at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+    at Readable.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+    at Readable.push (node:internal/streams/readable:391:5)
+    at nextAsync (node:internal/streams/from:194:22) {
+  code: 'EREQUEST',
+  originalError: Error: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.
+      at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:382:19)
+      at Connection.emit (node:events:518:28)
+      at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+      at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+      at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+      at Readable.emit (node:events:518:28)
+      at addChunk (node:internal/streams/readable:559:12)
+      at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+      at Readable.push (node:internal/streams/readable:391:5)
+      at nextAsync (node:internal/streams/from:194:22) {
+    info: ErrorMessageToken {
+      name: 'ERROR',
+      handlerName: 'onErrorMessage',
+      number: 547,
+      state: 0,
+      class: 16,
+      message: `The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.`,
+      serverName: 'tectlup',
+      procName: '',
+      lineNumber: 1
+    }
+  },
+  number: 547,
+  lineNumber: 1,
+  state: undefined,
+  class: 16,
+  serverName: 'tectlup',
+  procName: '',
+  precedingErrors: []
+}
+{ id_usuario: '5', id_objeto: 0 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '5', '0')
+RequestError: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.
+    at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:384:15)
+    at Connection.emit (node:events:518:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+    at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+    at Readable.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+    at Readable.push (node:internal/streams/readable:391:5)
+    at nextAsync (node:internal/streams/from:194:22) {
+  code: 'EREQUEST',
+  originalError: Error: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.
+      at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:382:19)
+      at Connection.emit (node:events:518:28)
+      at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+      at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+      at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+      at Readable.emit (node:events:518:28)
+      at addChunk (node:internal/streams/readable:559:12)
+      at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+      at Readable.push (node:internal/streams/readable:391:5)
+      at nextAsync (node:internal/streams/from:194:22) {
+    info: ErrorMessageToken {
+      name: 'ERROR',
+      handlerName: 'onErrorMessage',
+      number: 547,
+      state: 0,
+      class: 16,
+      message: `The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.`,
+      serverName: 'tectlup',
+      procName: '',
+      lineNumber: 1
+    }
+  },
+  number: 547,
+  lineNumber: 1,
+  state: undefined,
+  class: 16,
+  serverName: 'tectlup',
+  procName: '',
+  precedingErrors: []
+}
+{ id_usuario: '5', id_objeto: 0 }
+INSERT INTO EscenaObjeto (id_usuario, id_objeto) VALUES ( '5', '0')
+RequestError: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.
+    at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:384:15)
+    at Connection.emit (node:events:518:28)
+    at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+    at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+    at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+    at Readable.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:559:12)
+    at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+    at Readable.push (node:internal/streams/readable:391:5)
+    at nextAsync (node:internal/streams/from:194:22) {
+  code: 'EREQUEST',
+  originalError: Error: The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.
+      at handleError (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/mssql/lib/tedious/request.js:382:19)
+      at Connection.emit (node:events:518:28)
+      at Connection.emit (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/connection.js:959:18)
+      at RequestTokenHandler.onErrorMessage (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/handler.js:285:21)
+      at Readable.<anonymous> (/home/ec2-user/WebApp/ApiAR/post azure/node_modules/tedious/lib/token/token-stream-parser.js:18:33)
+      at Readable.emit (node:events:518:28)
+      at addChunk (node:internal/streams/readable:559:12)
+      at readableAddChunkPushObjectMode (node:internal/streams/readable:536:3)
+      at Readable.push (node:internal/streams/readable:391:5)
+      at nextAsync (node:internal/streams/from:194:22) {
+    info: ErrorMessageToken {
+      name: 'ERROR',
+      handlerName: 'onErrorMessage',
+      number: 547,
+      state: 0,
+      class: 16,
+      message: `The INSERT statement conflicted with the FOREIGN KEY constraint "FK_id_objeto". The conflict occurred in database "teclup", table "dbo.Objeto", column 'id_objeto'.`,
+      serverName: 'tectlup',
+      procName: '',
+      lineNumber: 1
+    }
+  },
+  number: 547,
+  lineNumber: 1,
+  state: undefined,
+  class: 16,
+  serverName: 'tectlup',
+  procName: '',
+  precedingErrors: []
+}
