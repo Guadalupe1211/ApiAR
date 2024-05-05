@@ -13,11 +13,11 @@ const sql = require("mssql");
 
 // config for your data]base
 const config = {
-    user: 'dk',
-    password: 'HuevitoConPapas2024.',
-    server: 'lab420azdb01.itesm.mx', 
+    user: 'teclup',
+    password: 'Luptec4321',
+    server: 'tectlup.database.windows.net', 
     port: 1433,
-    database: 'dk_test',
+    database: 'teclup',
     trustServerCertificate: true,
 };
 // crea una nueva instancia de conexión a la base de datos
