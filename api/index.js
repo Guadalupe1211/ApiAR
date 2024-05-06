@@ -276,7 +276,7 @@ app.get('/api/userAndProjects/:sceneId', async (req, res) => {
 
         // Query to fetch related objects (Objeto) within the scene
         const projectsQuery = `
-            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.id_escenaObjeto
+            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.id_escenaObjeto, EscenaObjeto.id_usuario
             FROM EscenaObjeto
             JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
             WHERE EscenaObjeto.id_escena = @sceneId;
@@ -287,7 +287,6 @@ app.get('/api/userAndProjects/:sceneId', async (req, res) => {
             .query(projectsQuery);
 
         res.json({
-            userData: userDataResult.recordset[0],
             projects: projectsResult.recordset
         });
     } catch (error) {
