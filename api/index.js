@@ -260,7 +260,7 @@ app.get('/api/userAndProjects/:sceneId', async (req, res) => {
 
         // Query to fetch Escena details along with associated Usuario information
         const userDataQuery = `
-        SELECT Escena.*, Usuario.*
+        SELECT Escena.id_escena, Usuario.id
         FROM Escena
         JOIN Usuario ON Usuario.id = Escena.id_usuario
         WHERE Escena.id_escena = @sceneId;
@@ -276,7 +276,7 @@ app.get('/api/userAndProjects/:sceneId', async (req, res) => {
 
         // Query to fetch related objects (Objeto) within the scene
         const projectsQuery = `
-            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.*
+            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.id_escenaObjeto
             FROM EscenaObjeto
             JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
             WHERE EscenaObjeto.id_escena = @sceneId;
