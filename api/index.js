@@ -570,28 +570,36 @@ app.post('/api/Escena', (req, res) => {
 });
 app.post('/api/notas', async (req, res) => {
     try {
-        const { id_escena, contenido } = req.body;
-        await sql.connect(config);
+        const { id_objeto, contenido } = req.body;
 
-        // Obtener el id_usuario asociado a id_escena
-        const userDataQuery = 'SELECT id_usuario FROM EscenaObjeto WHERE id_escena = @id_escena';
-        const request = new sql.Request();
-        request.input('id_escena', sql.Int, id_escena);
-        const userDataResult = await request.query(userDataQuery);
-
+        // Encontrar id_usuario relacionado con el id_objeto
+        const userDataQuery = `
+            SELECT id_usuario FROM EscenaObjeto WHERE id_objeto = @id_objeto
+        `;
+        const userDataResult = await sql.connect(config)
+            .then(pool => {
+                return pool.request()
+                    .input('id_objeto', sql.Int, id_objeto)
+                    .query(userDataQuery);
+            });
+        
         if (userDataResult.recordset.length === 0) {
-            return res.status(404).json({ error: "No se encontró el id_usuario correspondiente a la id_escena proporcionada." });
+            throw new Error("No se encontró el id_usuario correspondiente al id_objeto.");
         }
 
         const id_usuario = userDataResult.recordset[0].id_usuario;
 
-        // Insertar la nota en la base de datos
-        request.input('id_usuario', sql.Int, id_usuario);
-        request.input('contenido', sql.VarChar, contenido);
-        const insertQuery = 'INSERT INTO Notas (id_escena, id_usuario, contenido) VALUES (@id_escena, @id_usuario, @contenido)';
-        const result = await request.query(insertQuery);
+        // Insertar la nota en la base de datos sin incluir id_nota
+        const result = await sql.connect(config)
+            .then(pool => {
+                return pool.request()
+                    .input('id_objeto', sql.Int, id_objeto)
+                    .input('id_usuario', sql.Int, id_usuario)
+                    .input('contenido', sql.VarChar, contenido)
+                    .query('INSERT INTO Notas (id_escena, id_usuario, contenido) VALUES (@id_objeto, @id_usuario, @contenido)');
+            });
 
-        // Verificación de la inserción correcta
+        // Verificar si la nota se insertó correctamente
         if (result.rowsAffected[0] === 1) {
             res.status(201).json({ message: 'Nota creada exitosamente.' });
         } else {
