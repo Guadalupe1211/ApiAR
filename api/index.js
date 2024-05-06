@@ -149,35 +149,7 @@ app.post('/api/validateUser', (req, res) => {
             sql.close();
         });
 });
-
-/* app.get('/api/load-object/:id', (req, res) => {
-    const idObjeto = req.params.id; // Obtiene el ID del objeto de los parámetros de la solicitud
-    const sqlQuery = "SELECT objUrl, mtlUrl FROM Objeto WHERE id_objeto = @idObjeto";
-
-    // Ejecuta la consulta SQL utilizando la instancia de conexión
-    dblClick.connect().then(pool => {
-        return pool.request()
-            .input('idObjeto', sql.Int, idObjeto)
-            .query(sqlQuery);
-    }).then(result => {
-        // Procesa el resultado de la consulta
-        if (result.recordset.length > 0) {
-            const urls = result.recordset.map(row => ({
-                objUrl: row.objUrl,
-                mtlUrl: row.mtlUrl
-            }));
-            res.status(200).json(urls); // Envía un arreglo de objetos JSON con las URLs recuperadas
-        } else {
-            res.status(404).json({ error: "No se encontró el objeto" }); // Envía un mensaje JSON si no se encontró el objeto
-        }
-    }).catch(err => {
-        // Maneja los errores de consulta
-        console.log('Error de consulta:', err);
-        res.status(500).json({ error: "Error interno del servidor" }); // Envía un mensaje JSON de error interno del servidor
-    });
-}); */
-
-
+/*
 app.get('/api/load-all-objects', (req, res) => {
     const sqlQuery = "SELECT id_objeto, titulo, imgUrl, objUrl, mtlUrl, Empresa FROM Objeto"; // Consulta SQL para obtener todos los objetos
 
@@ -206,6 +178,24 @@ app.get('/api/load-all-objects', (req, res) => {
         console.log('Error de consulta:', err);
         res.status(500).json({ error: "Error interno del servidor" }); // Envía un mensaje JSON de error interno del servidor
     });
+});
+*/
+app.get('/api/load-all-objects', function (req, res)  {
+    sql.connect(config, function (err) {
+        if (err) console.log(err);
+        var request = new sql.Request();
+        sentencia = "SELECT id_objeto, titulo, imgUrl, objUrl, mtlUrl, Empresa FROM Objeto";
+        console.log(sentencia);
+        request.query(sentencia, function (err, recordset) {
+            
+            if (err) console.log(err)
+
+            // send records as a response
+            res.send(recordset.recordset);
+            
+        });
+    });
+
 });
 
 
@@ -316,10 +306,7 @@ app.get('/api/userAndProjects/:userId', async (req, res) => {
     }
 });
 
-
-
-
-
+/*
 app.get('/api/escena-objeto', async (req, res) => {
     try {
         const sqlQuery = `
@@ -339,12 +326,38 @@ app.get('/api/escena-objeto', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
+*/
+app.get('/api/EscenaObjeto', function (req, res) {
+    const { id_escena } = req.query; // Get id_escena from query parameters
 
+    sql.connect(config, function (err) {
+        if (err) {
+            console.log(err);
+            res.status(500).send('Error connecting to the database.');
+            return;
+        }
 
+        var request = new sql.Request();
+        let query = `SELECT eo.id_escenaObjeto, eo.escala, eo.posicion, o.objUrl, o.mtlUrl
+                     FROM EscenaObjeto eo
+                     JOIN Objeto o ON eo.id_objeto = o.id_objeto`;
+        if (id_escena) {
+            query += ` WHERE eo.id_escena = @idEscena`; // Filter by id_escena
+            request.input('idEscena', sql.Int, id_escena);
+        }
 
+        request.query(query, function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send('Failed to retrieve data.');
+                return;
+            }
+            res.send(result.recordset);
+        });
+    });
+});
 
-
-
+/*
 // Create
 app.post('/api/EscenaObjeto', (req, res) => {
     sql.connect(config, err => {
@@ -368,8 +381,79 @@ app.post('/api/EscenaObjeto', (req, res) => {
         }
     });
 });
+*/
+
+app.put('/api/EscenaObjeto/:id_escenaObjeto', function (req, res) {
+    // Connect to your database
+    sql.connect(config).then(pool => {
+        // Extract data from request body
+        const { escala, posicion, id_objeto, id_escena } = req.body;
+        const id_escenaObjeto = req.params.id_escenaObjeto;
+
+        // Build the update statement using parameters
+        return pool.request()
+            .input('escala', sql.VarChar, escala)
+            .input('posicion', sql.VarChar, posicion)
+            .input('id_objeto', sql.Int, id_objeto)
+            .input('id_escena', sql.Int, id_escena)
+            .input('id_escenaObjeto', sql.Int, id_escenaObjeto)
+            .query(`UPDATE EscenaObjeto SET 
+                escala = @escala, 
+                posicion = @posicion, 
+                id_objeto = @id_objeto,
+                id_escena = @id_escena
+                WHERE id_escenaObjeto = @id_escenaObjeto`);
+    }).then(result => {
+        // Check if any rows were affected
+        if (result.rowsAffected[0] > 0) {
+            res.status(200).send('EscenaObjeto updated successfully.');
+        } else {
+            res.status(404).send('EscenaObjeto not found.');
+        }
+    }).catch(err => {
+        console.error(err);
+        res.status(500).send('Failed to update EscenaObjeto.');
+    });
+});
 
 
+
+app.post('/api/EscenaObjeto', function (req, res) {
+    // Connect to your database
+    sql.connect(config).then(pool => {
+        // Extract data from request body
+        const { escala, posicion, id_objeto, id_escena, id_usuario } = req.body;
+
+        // Ensure all required fields are provided
+        if (id_objeto == null || id_escena == null || id_usuario == null) {
+            return res.status(400).send('Missing required fields: id_objeto, id_escena, or id_usuario');
+        }
+
+        // Build the INSERT statement using parameters
+        return pool.request()
+            .input('escala', sql.VarChar, escala)
+            .input('posicion', sql.VarChar, posicion)
+            .input('id_objeto', sql.Int, id_objeto)
+            .input('id_escena', sql.Int, id_escena)
+            .input('id_usuario', sql.Int, id_usuario)
+            .query(`INSERT INTO EscenaObjeto (escala, posicion, id_objeto, id_escena, id_usuario) 
+                    VALUES (@escala, @posicion, @id_objeto, @id_escena, @id_usuario)`);
+    }).then(result => {
+        // Check if the insert was successful
+        if (result.rowsAffected[0] > 0) {
+            res.status(201).send('EscenaObjeto created successfully.');
+        } else {
+            res.status(400).send('Failed to create EscenaObjeto.');
+        }
+    }).catch(err => {
+        console.error("SQL Error: ", err);
+        if (err.originalError && err.originalError.info) {
+            res.status(500).send(`SQL Error: ${err.originalError.info.message}`);
+        } else {
+            res.status(500).send('Failed to insert EscenaObjeto into the database.');
+        }
+    });
+});
 
 app.delete('/api/EscenaObjeto', (req, res) => {
     sql.connect(config, err => {
@@ -422,6 +506,52 @@ app.get('/api/notas/:id_escena', (req, res) => {
     });
 });
 
+app.get('/api/Escena/:id_escena', function (req, res) {
+   
+    // connect to your database
+    sql.connect(config, function (err) {
+    
+        if (err) console.log(err);
+
+        // create Request object
+        var request = new sql.Request();
+           
+        // query to the database and get the records
+        sentencia = "select * from Escena where id_escena = " + req.params.id_escena;
+        console.log(sentencia);
+        request.query(sentencia, function (err, recordset) {
+            
+            if (err) console.log(err)
+
+            // send records as a response
+            res.send(recordset.recordset[0]);
+            
+        });
+    });
+    
+});
+app.post('/api/Escena', (req, res) => {
+    sql.connect(config, err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('No se puede connectar a la base de datos.');
+        } else {
+            const request = new sql.Request();
+            console.log(req.body);
+            const { id_usuario} = req.body;
+            sentencia = `INSERT INTO Escena (id_escena, id_usuario) VALUES (((SELECT max(id_escena) as ultimo FROM Escena)+1), '${id_usuario}')`;
+            console.log(sentencia);
+            request.query(sentencia, (err, result) => {
+            if (err) {
+                console.log(err);
+                res.status(500).send('No se pudo crear el registro.');
+            } else {
+                res.status(201).send('Registro creado.');
+            }
+            });
+        }
+    });
+});
 app.post('/api/notas', async (req, res) => {
     try {
         const { id_objeto, contenido } = req.body;
@@ -464,11 +594,7 @@ app.post('/api/notas', async (req, res) => {
         res.status(500).json({ error: 'Error interno del servidor.' });
     }
 });
-
-
-
   
-
 app.put('/api/notas/:id_nota', (req, res) => {
     const { id_nota } = req.params;
     const { contenido } = req.body;
@@ -549,6 +675,31 @@ app.get('/api/userAndProjects2/:id_objeto', async (req, res) => {
       res.status(500).json({ error: 'Internal server error.' });
     }
   });
+
+  app.get('/api/Objeto/:id_objeto', function (req, res) {
+   
+    // connect to your database
+    sql.connect(config, function (err) {
+    
+        if (err) console.log(err);
+
+        // create Request object
+        var request = new sql.Request();
+           
+        // query to the database and get the records
+        sentencia = "select * from Objeto where id_objeto = " + req.params.id_objeto;
+        console.log(sentencia);
+        request.query(sentencia, function (err, recordset) {
+            
+            if (err) console.log(err)
+
+            // send records as a response
+            res.send(recordset.recordset[0]);
+            
+        });
+    });
+    
+});
 
 app.get("*", (req, res) => {
     res.status(404).json({error: "Route not found"})
