@@ -665,18 +665,18 @@ app.delete('/api/notas/:id_nota', (req, res) => {
 });
 
 
-app.get('/api/userAndProjects2/:id_objeto', async (req, res) => {
+app.get('/api/userAndProjects2/:id_escena', async (req, res) => {
     try {
-      const { id_objeto } = req.params;
+      const { id_escena } = req.params;
   
       // Query to fetch user ID based on the scene ID from EscenaObjeto
       const userDataQuery = `
-        SELECT id_usuario FROM EscenaObjeto WHERE id_objeto = @id_objeto
+        SELECT id_escena FROM EscenaObjeto WHERE id_escena = @id_escena
       `;
       const userDataResult = await sql.connect(config)
         .then(pool => {
           return pool.request()
-            .input('id_objeto', sql.Int, id_objeto)
+            .input('id_escena', sql.Int, id_escena)
             .query(userDataQuery);
         });
   
@@ -685,12 +685,16 @@ app.get('/api/userAndProjects2/:id_objeto', async (req, res) => {
       }
   
       // Send the user ID in the response
-      res.status(200).json({ userId: userDataResult.recordset[0].id_usuario });
+      res.status(200).json({ userId: userDataResult.recordset[0].id_escena });
     } catch (error) {
       console.error('Error fetching user id:', error);
       res.status(500).json({ error: 'Internal server error.' });
     }
   });
+
+
+
+
 
   app.get('/api/Objeto/:id_objeto', function (req, res) {
    
