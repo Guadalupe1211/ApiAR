@@ -579,7 +579,7 @@ app.post('/api/notas', async (req, res) => {
         const userDataResult = await sql.connect(config)
             .then(pool => {
                 return pool.request()
-                    .input('id_escena', sql.Int, id_objeto)
+                    .input('id_escena', sql.Int, id_escena)
                     .query(userDataQuery);
             });
         
