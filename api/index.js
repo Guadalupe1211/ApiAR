@@ -254,52 +254,48 @@ app.get('/api/user/:userId', (req, res) => {
 app.get('/api/userAndProjects/:sceneId', async (req, res) => {
     const sceneId = req.params.sceneId;
 
-    // Create a single database connection for reuse
     let pool = null;
     try {
         pool = await sql.connect(config);
 
-        // Query to fetch user data
-        const userDataQuery = `SELECT * FROM Escena WHERE id = @sceneId`;
+        // Query to fetch Escena details along with associated Usuario information
+        const userDataQuery = `
+        SELECT Escena.*, Usuario.*
+        FROM Escena
+        JOIN Usuario ON Usuario.id = Escena.id_usuario
+        WHERE Escena.id_escena = @sceneId;
+        `;
 
-        // Execute the query to fetch user data
         const userDataResult = await pool.request()
             .input('sceneId', sql.Int, sceneId)
             .query(userDataQuery);
 
-        // Check if user data is found
         if (userDataResult.recordset.length === 0) {
             return res.status(404).json({ message: 'Escena no encontrado' });
         }
 
-        // Corrected join condition in the query
+        // Query to fetch related objects (Objeto) within the scene
         const projectsQuery = `
-            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.id_escena, EscenaObjeto.id_escenaObjeto, EscenaObjeto.id_usuario, EscenaObjeto.escala, EscenaObjeto.posicion
-            FROM Escena
-            INNER JOIN EscenaObjeto ON Escena.id_escena = EscenaObjeto.id_escena  // Corrected join condition
-            INNER JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
-            WHERE Escena.id_escena = @sceneId
+            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.*
+            FROM EscenaObjeto
+            JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
+            WHERE EscenaObjeto.id_escena = @sceneId;
         `;
 
-        // Execute the query to fetch projects
         const projectsResult = await pool.request()
             .input('sceneId', sql.Int, sceneId)
             .query(projectsQuery);
 
-        // Extract projects from the query result
-        const projects = projectsResult.recordset;
-
-        // Send the user data and projects as a JSON response
         res.json({
             userData: userDataResult.recordset[0],
-            projects: projects
+            projects: projectsResult.recordset
         });
     } catch (error) {
         console.error('Error fetching user data and projects:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
     } finally {
         if (pool) {
-            pool.close();  // Ensure the connection is closed
+            pool.close();
         }
     }
 });
