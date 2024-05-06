@@ -277,7 +277,7 @@ app.get('/api/userAndProjects/:userId', async (req, res) => {
 
         // Query to fetch user-specific projects based on scenes connected to the user ID
         const projectsQuery = `
-            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa
+            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.id_escena, EscenaObjeto.id_escenaObjeto, EscenaObjeto.id_usuario, EscenaObjeto.escala, EscenaObjeto.posicion
             FROM Usuario 
             INNER JOIN EscenaObjeto ON Usuario.id = EscenaObjeto.id_usuario 
             INNER JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
