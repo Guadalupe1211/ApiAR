@@ -568,49 +568,43 @@ app.post('/api/Escena', (req, res) => {
         }
     });
 });
+
+
 app.post('/api/notas', async (req, res) => {
     try {
-        const { id_objeto, contenido } = req.body;
+        const { id_escena, contenido } = req.body;
+        await sql.connect(config);
 
-        // Encontrar id_usuario relacionado con el id_objeto
-        const userDataQuery = `
-            SELECT id_usuario FROM EscenaObjeto WHERE id_objeto = @id_objeto
-        `;
-        const userDataResult = await sql.connect(config)
-            .then(pool => {
-                return pool.request()
-                    .input('id_objeto', sql.Int, id_objeto)
-                    .query(userDataQuery);
-            });
-        
+        const userDataQuery = 'SELECT id_usuario FROM EscenaObjeto WHERE id_escena = @id_escena';
+        const request = new sql.Request();
+        request.input('id_escena', sql.Int, id_escena);
+        const userDataResult = await request.query(userDataQuery);
+
         if (userDataResult.recordset.length === 0) {
-            throw new Error("No se encontró el id_usuario correspondiente al id_objeto.");
+            return res.status(404).json({ error: "No user ID found for the given scene ID." });
         }
-
+        
         const id_usuario = userDataResult.recordset[0].id_usuario;
 
-        // Insertar la nota en la base de datos sin incluir id_nota
-        const result = await sql.connect(config)
-            .then(pool => {
-                return pool.request()
-                    .input('id_objeto', sql.Int, id_objeto)
-                    .input('id_usuario', sql.Int, id_usuario)
-                    .input('contenido', sql.VarChar, contenido)
-                    .query('INSERT INTO Notas (id_escena, id_usuario, contenido) VALUES (@id_objeto, @id_usuario, @contenido)');
-            });
+        request.input('id_usuario', sql.Int, id_usuario);
+        request.input('contenido', sql.VarChar, contenido);
+        const insertQuery = 'INSERT INTO Notas (id_escena, id_usuario, contenido) VALUES (@id_escena, @id_usuario, @contenido)';
+        const result = await request.query(insertQuery);
 
-        // Verificar si la nota se insertó correctamente
         if (result.rowsAffected[0] === 1) {
-            res.status(201).json({ message: 'Nota creada exitosamente.' });
+            res.status(201).json({ message: 'Note created successfully.' });
         } else {
-            res.status(500).json({ error: 'No se pudo crear la nota.' });
+            throw new Error('Failed to create note.');
         }
     } catch (error) {
-        console.error('Error al crear la nota:', error);
-        res.status(500).json({ error: 'Error interno del servidor.' });
+        console.error('Error creating note:', error.message);
+        res.status(500).json({
+            error: 'Internal Server Error',
+            details: error.message  // Providing the actual error message which might help in debugging.
+        });
     }
 });
-  
+
 app.put('/api/notas/:id_nota', (req, res) => {
     const { id_nota } = req.params;
     const { contenido } = req.body;
