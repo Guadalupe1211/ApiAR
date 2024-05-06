@@ -500,29 +500,26 @@ app.get('/api/notas/:id_escena', (req, res) => {
     });
 });
 app.get('/api/Escena/:id_usuario', function (req, res) {
-   
-    // connect to your database
     sql.connect(config, function (err) {
-    
-        if (err) console.log(err);
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error connecting to the database');
+        }
 
-        // create Request object
         var request = new sql.Request();
-           
-        // query to the database and get the records
-        sentencia = "select * from Escena where id_usuario = " + req.params.id_usuario;
-        console.log(sentencia);
+        const sentencia = "SELECT * FROM Escena WHERE id_usuario = @id_usuario";
+        request.input('id_usuario', sql.Int, req.params.id_usuario);
+        
         request.query(sentencia, function (err, recordset) {
-            
-            if (err) console.log(err)
-
-            // send records as a response
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Error executing query');
+            }
             res.send(recordset.recordset);
-            
         });
     });
-    
 });
+
 /*
 app.get('/api/Escena/:id_escena', function (req, res) {
    
