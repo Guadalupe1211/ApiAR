@@ -500,29 +500,26 @@ app.get('/api/notas/:id_escena', (req, res) => {
     });
 });
 app.get('/api/Escena/:id_usuario', function (req, res) {
-   
-    // connect to your database
     sql.connect(config, function (err) {
-    
-        if (err) console.log(err);
+        if (err) {
+            console.error(err);
+            return res.status(500).send('Error connecting to the database');
+        }
 
-        // create Request object
         var request = new sql.Request();
-           
-        // query to the database and get the records
-        sentencia = "select * from Escena where id_usuario = " + req.params.id_usuario;
-        console.log(sentencia);
+        const sentencia = "SELECT * FROM Escena WHERE id_usuario = @id_usuario";
+        request.input('id_usuario', sql.Int, req.params.id_usuario);
+        
         request.query(sentencia, function (err, recordset) {
-            
-            if (err) console.log(err)
-
-            // send records as a response
+            if (err) {
+                console.error(err);
+                return res.status(500).send('Error executing query');
+            }
             res.send(recordset.recordset);
-            
         });
     });
-    
 });
+
 /*
 app.get('/api/Escena/:id_escena', function (req, res) {
    
@@ -668,18 +665,18 @@ app.delete('/api/notas/:id_nota', (req, res) => {
 });
 
 
-app.get('/api/userAndProjects2/:id_objeto', async (req, res) => {
+app.get('/api/userAndProjects2/:id_escena', async (req, res) => {
     try {
-      const { id_objeto } = req.params;
+      const { id_escena } = req.params;
   
       // Query to fetch user ID based on the scene ID from EscenaObjeto
       const userDataQuery = `
-        SELECT id_usuario FROM EscenaObjeto WHERE id_objeto = @id_objeto
+        SELECT id_escena FROM EscenaObjeto WHERE id_escena = @id_escena
       `;
       const userDataResult = await sql.connect(config)
         .then(pool => {
           return pool.request()
-            .input('id_objeto', sql.Int, id_objeto)
+            .input('id_escena', sql.Int, id_escena)
             .query(userDataQuery);
         });
   
@@ -688,12 +685,16 @@ app.get('/api/userAndProjects2/:id_objeto', async (req, res) => {
       }
   
       // Send the user ID in the response
-      res.status(200).json({ userId: userDataResult.recordset[0].id_usuario });
+      res.status(200).json({ userId: userDataResult.recordset[0].id_escena });
     } catch (error) {
       console.error('Error fetching user id:', error);
       res.status(500).json({ error: 'Internal server error.' });
     }
   });
+
+
+
+
 
   app.get('/api/Objeto/:id_objeto', function (req, res) {
    
