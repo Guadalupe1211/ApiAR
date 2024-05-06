@@ -570,21 +570,21 @@ app.post('/api/Escena', (req, res) => {
 });
 app.post('/api/notas', async (req, res) => {
     try {
-        const { id_objeto, contenido } = req.body;
+        const { id_escena, contenido } = req.body;
 
         // Encontrar id_usuario relacionado con el id_objeto
         const userDataQuery = `
-            SELECT id_usuario FROM EscenaObjeto WHERE id_objeto = @id_objeto
+            SELECT id_usuario FROM EscenaObjeto WHERE id_escena = @id_escena
         `;
         const userDataResult = await sql.connect(config)
             .then(pool => {
                 return pool.request()
-                    .input('id_objeto', sql.Int, id_objeto)
+                    .input('id_escena', sql.Int, id_objeto)
                     .query(userDataQuery);
             });
         
         if (userDataResult.recordset.length === 0) {
-            throw new Error("No se encontró el id_usuario correspondiente al id_objeto.");
+            throw new Error("No se encontró el id_usuario correspondiente a la id_escena.");
         }
 
         const id_usuario = userDataResult.recordset[0].id_usuario;
@@ -593,7 +593,7 @@ app.post('/api/notas', async (req, res) => {
         const result = await sql.connect(config)
             .then(pool => {
                 return pool.request()
-                    .input('id_objeto', sql.Int, id_objeto)
+                    .input('id_escena', sql.Int, id_objeto)
                     .input('id_usuario', sql.Int, id_usuario)
                     .input('contenido', sql.VarChar, contenido)
                     .query('INSERT INTO Notas (id_escena, id_usuario, contenido) VALUES (@id_objeto, @id_usuario, @contenido)');
