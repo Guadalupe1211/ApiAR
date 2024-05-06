@@ -19,7 +19,7 @@ const config = {
     port: 1433,
     database: 'teclup',
     trustServerCertificate: true,
-};//
+};
 // crea una nueva instancia de conexión a la base de datos
 const dblClick = new sql.ConnectionPool(config);
 let pool;
