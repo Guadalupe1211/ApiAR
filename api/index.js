@@ -252,13 +252,13 @@ app.get('/api/user/:userId', (req, res) => {
     });
 });
 
-app.get('/api/userAndProjects/:userId', async (req, res) => {
-    const userId = req.params.userId;
+app.get('/api/userAndProjects/:sceneId', async (req, res) => {
+    const sceneId = req.params.sceneId;
 
     try {
         // Query to fetch user data
         const userDataQuery = `
-            SELECT * FROM Usuario WHERE id = @userId
+            SELECT * FROM Escena WHERE id = @sceneId
         `;
 //wdwd
 
@@ -266,29 +266,29 @@ app.get('/api/userAndProjects/:userId', async (req, res) => {
         const userDataResult = await sql.connect(config)
             .then(pool => {
                 return pool.request()
-                    .input('userId', sql.Int, userId)
+                    .input('sceneId', sql.Int, sceneId)
                     .query(userDataQuery);
             });
 
         // Check if user data is found
         if (userDataResult.recordset.length === 0) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+            return res.status(404).json({ message: 'Escena no encontrado' });
         }
 
         // Query to fetch user-specific projects based on scenes connected to the user ID
         const projectsQuery = `
             SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.id_escena, EscenaObjeto.id_escenaObjeto, EscenaObjeto.id_usuario, EscenaObjeto.escala, EscenaObjeto.posicion
-            FROM Usuario 
-            INNER JOIN EscenaObjeto ON Usuario.id = EscenaObjeto.id_usuario 
+            FROM Escena 
+            INNER JOIN EscenaObjeto ON Escena.id_escena = EscenaObjeto.id_usuario 
             INNER JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
-            WHERE Usuario.id = @userId
+            WHERE Escena.id_escena = @sceneId
         `;
 
         // Execute the query to fetch projects
         const projectsResult = await sql.connect(config)
             .then(pool => {
                 return pool.request()
-                    .input('userId', sql.Int, userId)
+                    .input('sceneId', sql.Int, sceneId)
                     .query(projectsQuery);
             });
 
