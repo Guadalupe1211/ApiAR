@@ -399,5 +399,9 @@ app.delete('/api/EscenaObjeto', (req, res) => {
     });
 });
 
+app.get("*", (req, res) => {
+    res.status(404).json({error: "Route not found"})
+});
+
 
 app.listen(2023, () => console.log("Listening on port 2023"));
