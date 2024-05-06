@@ -517,7 +517,7 @@ app.get('/api/Escena/:id_usuario', function (req, res) {
             if (err) console.log(err)
 
             // send records as a response
-            res.send(recordset.recordset[0]);
+            res.send(recordset.recordset);
             
         });
     });
