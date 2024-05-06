@@ -596,7 +596,7 @@ app.post('/api/notas', async (req, res) => {
                     .input('id_escena', sql.Int, id_objeto)
                     .input('id_usuario', sql.Int, id_usuario)
                     .input('contenido', sql.VarChar, contenido)
-                    .query('INSERT INTO Notas (id_escena, id_usuario, contenido) VALUES (@id_objeto, @id_usuario, @contenido)');
+                    .query('INSERT INTO Notas (id_escena, id_usuario, contenido) VALUES (@id_escena, @id_usuario, @contenido)');
             });
 
         // Verificar si la nota se insertó correctamente
