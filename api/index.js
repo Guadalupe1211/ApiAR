@@ -399,6 +399,157 @@ app.delete('/api/EscenaObjeto', (req, res) => {
     });
 });
 
+
+app.get('/api/notas/:id_escena', (req, res) => {
+    const { id_escena } = req.params;
+    const sentencia = `SELECT * FROM Notas WHERE id_escena = '${id_escena}'`;
+
+    sql.connect(config, err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('No se puede conectar a la base de datos.');
+        } else {
+            const request = new sql.Request();
+            request.query(sentencia, (err, recordset) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Error al obtener las notas.');
+                } else {
+                    res.status(200).json(recordset.recordset);
+                }
+            });
+        }
+    });
+});
+
+app.post('/api/notas', async (req, res) => {
+    try {
+        const { id_objeto, contenido } = req.body;
+
+        // Encontrar id_usuario relacionado con el id_objeto
+        const userDataQuery = `
+            SELECT id_usuario FROM EscenaObjeto WHERE id_objeto = @id_objeto
+        `;
+        const userDataResult = await sql.connect(config)
+            .then(pool => {
+                return pool.request()
+                    .input('id_objeto', sql.Int, id_objeto)
+                    .query(userDataQuery);
+            });
+        
+        if (userDataResult.recordset.length === 0) {
+            throw new Error("No se encontró el id_usuario correspondiente al id_objeto.");
+        }
+
+        const id_usuario = userDataResult.recordset[0].id_usuario;
+
+        // Insertar la nota en la base de datos sin incluir id_nota
+        const result = await sql.connect(config)
+            .then(pool => {
+                return pool.request()
+                    .input('id_objeto', sql.Int, id_objeto)
+                    .input('id_usuario', sql.Int, id_usuario)
+                    .input('contenido', sql.VarChar, contenido)
+                    .query('INSERT INTO Notas (id_escena, id_usuario, contenido) VALUES (@id_objeto, @id_usuario, @contenido)');
+            });
+
+        // Verificar si la nota se insertó correctamente
+        if (result.rowsAffected[0] === 1) {
+            res.status(201).json({ message: 'Nota creada exitosamente.' });
+        } else {
+            res.status(500).json({ error: 'No se pudo crear la nota.' });
+        }
+    } catch (error) {
+        console.error('Error al crear la nota:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+});
+
+
+
+  
+
+app.put('/api/notas/:id_nota', (req, res) => {
+    const { id_nota } = req.params;
+    const { contenido } = req.body;
+    const sentencia = `UPDATE Notas SET contenido = '${contenido}' WHERE id_nota = '${id_nota}'`;
+
+    sql.connect(config, err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('No se puede conectar a la base de datos.');
+        } else {
+            const request = new sql.Request();
+            request.query(sentencia, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('Error al actualizar la nota.');
+                } else {
+                    if (result.rowsAffected[0] > 0) {
+                        res.status(200).send('Nota actualizada.');
+                    } else {
+                        res.status(404).send('Nota no encontrada.');
+                    }
+                }
+            });
+        }
+    });
+});
+
+app.delete('/api/notas/:id_nota', (req, res) => {
+    const { id_nota } = req.params;
+    const sentencia = `DELETE FROM Notas WHERE id_nota = '${id_nota}'`;
+
+    sql.connect(config, err => {
+        if (err) {
+            console.log(err);
+            res.status(500).send('No se puede conectar a la base de datos.');
+        } else {
+            const request = new sql.Request();
+            request.query(sentencia, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    res.status(500).send('No se pudo eliminar la nota.');
+                } else {
+                    if (result.rowsAffected[0] > 0) {
+                        res.status(200).send('Nota eliminada.');
+                    } else {
+                        res.status(404).send('Nota no encontrada.');
+                    }
+                }
+            });
+        }
+    });
+});
+
+
+app.get('/api/userAndProjects2/:id_objeto', async (req, res) => {
+    try {
+      const { id_objeto } = req.params;
+  
+      // Query to fetch user ID based on the scene ID from EscenaObjeto
+      const userDataQuery = `
+        SELECT id_usuario FROM EscenaObjeto WHERE id_objeto = @id_objeto
+      `;
+      const userDataResult = await sql.connect(config)
+        .then(pool => {
+          return pool.request()
+            .input('id_objeto', sql.Int, id_objeto)
+            .query(userDataQuery);
+        });
+  
+      if (userDataResult.recordset.length === 0) {
+        throw new Error("No user found for the scene ID.");
+      }
+  
+      // Send the user ID in the response
+      res.status(200).json({ userId: userDataResult.recordset[0].id_usuario });
+    } catch (error) {
+      console.error('Error fetching user id:', error);
+      res.status(500).json({ error: 'Internal server error.' });
+    }
+  });
+
 app.get("*", (req, res) => {
     res.status(404).json({error: "Route not found"})
 });
