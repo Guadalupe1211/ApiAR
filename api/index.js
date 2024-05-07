@@ -262,7 +262,7 @@ app.get('/api/userAndProjects/:userId', async (req, res) => {
         // Query to fetch all scenes with projects for the given user
         const projectsQuery = `
             SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa,
-                   EscenaObjeto.id_escenaObjeto, EscenaObjeto.id_usuario, EscenaObjeto.id_escena
+                   EscenaObjeto.id_usuario, EscenaObjeto.id_escena
             FROM EscenaObjeto
             JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
             JOIN Escena ON Escena.id_escena = EscenaObjeto.id_escena
