@@ -252,7 +252,7 @@ app.get('/api/user/:userId', (req, res) => {
     });
 });
 
-app.get('/api/userProjects/:userId', async (req, res) => {
+app.get('/api/userAndProjects/:userId', async (req, res) => {
     const userId = req.params.userId;
 
     let pool = null;
