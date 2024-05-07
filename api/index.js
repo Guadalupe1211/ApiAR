@@ -251,53 +251,45 @@ app.get('/api/user/:userId', (req, res) => {
         sql.close();
     });
 });
-app.get('/api/userAndProjects/:sceneId', async (req, res) => {
-    const sceneId = req.params.sceneId;
+
+app.get('/api/userProjects/:userId', async (req, res) => {
+    const userId = req.params.userId;
 
     let pool = null;
     try {
         pool = await sql.connect(config);
 
-        // Query to fetch Escena details along with associated Usuario information
-        const userDataQuery = `
-        SELECT Escena.id_escena, Usuario.id
-        FROM Escena
-        JOIN Usuario ON Usuario.id = Escena.id_usuario
-        WHERE Escena.id_escena = @sceneId;
-        `;
-
-        const userDataResult = await pool.request()
-            .input('sceneId', sql.Int, sceneId)
-            .query(userDataQuery);
-
-        if (userDataResult.recordset.length === 0) {
-            return res.status(404).json({ message: 'Escena no encontrado' });
-        }
-
-        // Query to fetch related objects (Objeto) within the scene
+        // Query to fetch all scenes with projects for the given user
         const projectsQuery = `
-            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa, EscenaObjeto.id_escenaObjeto, EscenaObjeto.id_usuario, EscenaObjeto.id_escena
+            SELECT Objeto.id_objeto, Objeto.Titulo, Objeto.objUrl, Objeto.mtlUrl, Objeto.imgUrl, Objeto.Empresa,
+                   EscenaObjeto.id_escenaObjeto, EscenaObjeto.id_usuario, EscenaObjeto.id_escena
             FROM EscenaObjeto
             JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
-            WHERE EscenaObjeto.id_escena = @sceneId;
+            JOIN Escena ON Escena.id_escena = EscenaObjeto.id_escena
+            WHERE Escena.id_usuario = @userId;
         `;
 
         const projectsResult = await pool.request()
-            .input('sceneId', sql.Int, sceneId)
+            .input('userId', sql.Int, userId)
             .query(projectsQuery);
+
+        if (projectsResult.recordset.length === 0) {
+            return res.status(404).json({ message: 'No projects found for the user' });
+        }
 
         res.json({
             projects: projectsResult.recordset
         });
     } catch (error) {
-        console.error('Error fetching user data and projects:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+        console.error('Error fetching projects:', error);
+        res.status(500).json({ error: 'Internal server error' });
     } finally {
         if (pool) {
             pool.close();
         }
     }
 });
+
 
 
 /*
