@@ -266,6 +266,7 @@ app.get('/api/userAndProjects/:userId', async (req, res) => {
                     Objeto.Empresa, 
                     EscenaObjeto.id_usuario, 
                     EscenaObjeto.id_escena,
+                    Objeto.imgUrl,
                     ROW_NUMBER() OVER (PARTITION BY EscenaObjeto.id_escena ORDER BY Objeto.id_objeto) AS rn
                 FROM EscenaObjeto
                 JOIN Objeto ON EscenaObjeto.id_objeto = Objeto.id_objeto
